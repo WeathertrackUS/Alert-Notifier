@@ -122,7 +122,7 @@ def get_timezone_keyword(offset):
     return timezone_keyword
 
 
-def fetch_and_update_alerts():  # skipcq: PYL-R1000
+def fetch_and_update_alerts():  # skipcq: PY-R1000
     """
     Fetches and updates alerts from the database.
 
