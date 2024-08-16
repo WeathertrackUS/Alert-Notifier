@@ -469,8 +469,8 @@ def fetch_alerts():
                 # New Alert
                 event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)
                 display_alert(event, notification_message, area_desc)
-                database.insert(identifier=identifier, table_name='active_alerts', event=event, 
-                                notification_message=notification_message, area_desc=area_desc, 
+                database.insert(identifier=identifier, table_name='active_alerts', event=event,
+                                notification_message=notification_message, area_desc=area_desc,
                                 expires_datetime=expires_datetime)  # skipcq: PYL-W0501
             else:
                 # Alert Exists
@@ -483,7 +483,7 @@ def fetch_alerts():
                     # Update to Existing Alert
                     event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)
                     display_alert(event, notification_message, area_desc)
-                    database.update(identifier=identifier, table_name='alerts', 
+                    database.update(identifier=identifier, table_name='alerts',
                                     send_datetime=sent_datetime, expires_datetime=expires_datetime, peoperties=properties)
     
     update_active_alerts()
