@@ -5,6 +5,16 @@ MAX_MESSAGE_LENGTH = 256
 
 
 def process_alert(properties, area_desc):
+    """
+    Process an alert notification based on the provided properties and area description.
+
+    Parameters:
+        properties (dict): A dictionary containing the alert properties, including headline, event, and parameters.
+        area_desc (str): A string describing the affected area.
+
+    Returns:
+        tuple: A tuple containing the event, notification message, area description, and expiration datetime.
+    """
     headline = properties["headline"]
     description = ''
     event = properties["event"]

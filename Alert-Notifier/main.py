@@ -375,6 +375,23 @@ def read_from_file(filename1):
 
 
 def fetch_alerts():
+    """
+    Fetches weather alerts from the National Weather Service API and processes them.
+
+    Retrieves a list of active weather alerts from the NWS API, filters them based on 
+    severity, urgency, and certainty, and then processes each alert to extract relevant 
+    information such as the event type, identifier, sent time, area description, and 
+    expiration time.
+
+    If an alert is new, it is inserted into the database and a notification is displayed.
+    If an alert already exists in the database, it is updated if the sent time has changed.
+
+    Parameters:
+    None
+
+    Returns:
+    None
+    """
     endpoint = "https://api.weather.gov/alerts/active"
     params = {
         "status": "actual",
@@ -429,10 +446,30 @@ def fetch_alerts():
 
 
 def update_active_alerts_and_exit():
+    """
+    Updates active alerts and exits the application.
+    
+    Parameters:
+    None
+    
+    Returns:
+    None
+    """
     update_active_alerts()
 
 
 def display_alert(event, notification_message, area_desc):
+    """
+    Displays a notification alert for a weather event.
+
+    Parameters:
+        event (str): The type of weather event (e.g., tornado, flood, etc.)
+        notification_message (str): The message to be displayed in the notification
+        area_desc (str): A description of the affected area
+
+    Returns:
+        None
+    """
     # Windows Notification
     notification.notify(
         title = event,
