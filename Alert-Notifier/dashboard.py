@@ -4,6 +4,7 @@ import database, os, re
 from datetime import datetime, timezone, timedelta
 from flask import Flask, render_template
 from collections import OrderedDict
+import ast
 
 base_dir = '../files/web'
 count_dir = '../ignore/count'
@@ -13,21 +14,26 @@ app.config['ACTIVE_ALERTS'] = []
 
 def read_from_file(filename):
     """
-    Reads an integer value from a file.
+    Read an integer from a file.
 
-    Args:
-        filename (str): The path to the file.
+    If the file exists and contains an integer, return that integer.
+    If the file does not exist or is empty, return 0.
+
+    Parameters:
+        filename (str): The name of the file to read from.
 
     Returns:
-        int: The integer value read from the file. If the file is not found or is empty, returns 0.
+        int: The integer read from the file or 0 if file not found or empty.
     """
+    if filename not in ("TOR Total.txt", "SVR Total.txt", "TOR Watch.txt", "SVR Watch.txt", "FFW Total.txt", "SPS.txt"):
+        return "Invalid filename"
+
     try:
         with open(filename, "r") as file:
             content = file.read().strip()
             if content:
                 return int(content)
-            else:
-                return 0
+            return 0
     except FileNotFoundError:
         return 0
     
@@ -127,7 +133,7 @@ def fetch_and_update_alerts():
         identifier, sent_datetime_str, expires_datetime_str, properties_str = alert
 
         expires_datetime = datetime.strptime(expires_datetime_str, '%Y-%m-%d %H:%M:%S').replace(tzinfo=timezone.utc)
-        properties = eval(properties_str)  # Convert the string back to a dictionary
+        properties = ast.literal_eval(properties_str)  # Convert the string back to a dictionary
 
         alert_endtime = properties["expires"]
         alert_endtime_tz_offset = alert_endtime[-6:]  # Extract the timezone offset from the string

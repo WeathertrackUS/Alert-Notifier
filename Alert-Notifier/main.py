@@ -319,19 +319,45 @@ def warning_count(data):
             warnings_file_path = os.path.join('warnings', 'SPS.txt')
             write_to_file(warnings_file_path, f'Seasonal Period Watches: {SPS}')
         
-def write_to_file(filename, content):
-    with open(filename, "w") as file:
-        file.write(content + "\n")
+def write_to_file(FILENAME, content1):  # skipcq: PYL-R1710
+    """
+    Writes content to a file.
 
-def read_from_file(filename):
+    Parameters:
+    filename (str): The name of the file to write to.
+    content (str): The content to write to the file.
+
+    Returns:
+    None
+    """
+    if FILENAME not in (warning_count_files, warning_files, "Warning Header.txt", "Warning Description.txt", "Warning Area.txt"):
+        return "Invalid filename"
+
+    with open(FILENAME, "w") as file2:
+        file2.write(content1 + "\n")
+
+
+def read_from_file(filename1):
+    """
+    Reads an integer from a file.
+
+    Parameters:
+    filename (str): The name of the file to read from.
+
+    Returns:
+    int: The integer read from the file. If the file does not exist or is empty, returns 0.
+    """
+    if filename1 not in (warning_count_files, warning_files, "Warning Header.txt", "Warning Description.txt", "Warning Area.txt"):
+        return "Invalid filename"
+
     try:
-        with open(filename, "r") as file:
-            content = file.read().strip()
-            if content:
-                cleaned_content = ''.join(char for char in content if char.isprintable())
+        with open(filename1, "r") as file1:
+            file_content = file1.read().strip()
+            if file_content:
+                # Remove any null bytes or invalid characters before converting to int
+                cleaned_content = ''.join(char for char in file_content if char.isprintable())
                 return int(cleaned_content)
-            else:
-                return 0
+            return 0
     except (FileNotFoundError, ValueError):
         return 0
 
