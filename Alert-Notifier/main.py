@@ -112,7 +112,7 @@ def hide_to_system_tray():
     Returns:
     - None
     """
-    global icon
+    global icon  # skipcq: PYL-W0601
     image = Image.open('My_project.png')
     menu = (pystray.MenuItem("Exit", close_program),)
     icon = pystray.Icon("name", image, "My System Tray Icon", menu)
@@ -188,7 +188,7 @@ def warning_count(data):
                 TORE += 1
             else:
                 TOR += 1
-        
+
         if event == 'Severe Thunderstorm Warning':
             Alert_Total += 1
             Non_SPS_Total += 1
@@ -201,7 +201,7 @@ def warning_count(data):
                 SVRD += 1
             else:
                 SVR += 1
-        
+
         if event == 'Flash Flood Warning':
             Alert_Total += 1
             Non_SPS_Total += 1
@@ -212,20 +212,19 @@ def warning_count(data):
                 FFE += 1
             else:
                 FFW += 1
-        
+
         if event == 'Tornado Watch':
             Alert_Total += 1
             TOA += 1
-        
+
         if event == 'Severe Thunderstorm Watch':
             Alert_Total += 1
             SVA += 1
-        
+
         if event == 'Special Weather Statement':
             Alert_Total += 1
             SPS += 1
 
-        
         # Previous Counts
         previous_Alert_Total_count = read_from_file(os.path.join("count", "Alert Total.txt"))
         previous_Non_SPS_Total_count = read_from_file(os.path.join("count", "Non SPS Total.txt"))
@@ -258,7 +257,7 @@ def warning_count(data):
             write_to_file(count_file_path, str(Alert_Total))
             warnings_file_path = os.path.join('warnings', 'Alert Total.txt')
             write_to_file(warnings_file_path, f'Total Alerts: {Alert_Total}')
-        
+
         if Non_SPS_Total != previous_Non_SPS_Total_count:
             count_file_path = os.path.join('count', 'Non SPS Total.txt')
             write_to_file(count_file_path, str(Non_SPS_Total))
@@ -270,44 +269,43 @@ def warning_count(data):
             write_to_file(count_file_path, str(TOR_total))
             warnings_file_path = os.path.join('warnings', 'TOR Total.txt')
             write_to_file(warnings_file_path, f'Active Tornado Warnings: {TOR_total}')
-        
+
         if TOR != previous_TOR_count:
             count_file_path = os.path.join('count', 'TOR.txt')
             write_to_file(count_file_path, str(TOR))
             warnings_file_path = os.path.join('warnings', 'TOR.txt')
             write_to_file(warnings_file_path, f'Tornado Warnings: {TOR}')
-        
+
         if TORR != previous_TORR_count:
             count_file_path = os.path.join('count', 'TORR.txt')
             write_to_file(count_file_path, str(TORR))
             warnings_file_path = os.path.join('warnings', 'TORR.txt')
             write_to_file(warnings_file_path, f'Confirmed Tornado Warnings: {TORR}')
-        
+
         if TORP != previous_TORP_count:
             count_file_path = os.path.join('count', 'TORP.txt')
             write_to_file(count_file_path, str(TORP))
             warnings_file_path = os.path.join('warnings', 'TORP.txt')
             write_to_file(warnings_file_path, f'PDS Tornado Warnings: {TORP}')
-        
+
         if TORE != previous_TORE_count:
             count_file_path = os.path.join('count', 'TORE.txt')
             write_to_file(count_file_path, str(TORE))
             warnings_file_path = os.path.join('warnings', 'TORE.txt')
             write_to_file(warnings_file_path, f'Tornado Emergencies: {TORE}')
-        
 
         if SVR_total != previous_SVR_total_count:
             count_file_path = os.path.join('count', 'SVR Total.txt')
             write_to_file(count_file_path, str(SVR_total))
             warnings_file_path = os.path.join('warnings', 'SVR Total.txt')
             write_to_file(warnings_file_path, f'Active Severe Thunderstorm Warnings: {SVR_total}')
-        
+
         if SVR != previous_SVR_count:
             count_file_path = os.path.join('count', 'SVR.txt')
             write_to_file(count_file_path, str(SVR))
             warnings_file_path = os.path.join('warnings', 'SVR.txt')
             write_to_file(warnings_file_path, f'Severe Thunderstorm Warnings: {SVR}')
-        
+
         if SVRC != previous_SVRC_count:
             count_file_path = os.path.join('count', 'SVRC.txt')
             write_to_file(count_file_path, str(SVRC))
@@ -319,51 +317,48 @@ def warning_count(data):
             write_to_file(count_file_path, str(SVRD))
             warnings_file_path = os.path.join('warnings', 'SVRD.txt')
             write_to_file(warnings_file_path, f'Destructive Severe Thunderstorm Warnings: {SVRD}')
-        
+
         if SVRTOR != previous_SVRTOR_count:
             count_file_path = os.path.join('count', 'SVRTOR.txt')
             write_to_file(count_file_path, str(SVRTOR))
             warnings_file_path = os.path.join('warnings', 'SVRTOR.txt')
             write_to_file(warnings_file_path, f'Severe Thunderstorm Emergencies: {SVRTOR}')
-        
 
         if FFW_total != previous_FFW_total_count:
             count_file_path = os.path.join('count', 'FFW Total.txt')
             write_to_file(count_file_path, str(FFW_total))
             warnings_file_path = os.path.join('warnings', 'FFW Total.txt')
             write_to_file(warnings_file_path, f'Active Flash Flood Warnings: {FFW_total}')
-        
+
         if FFW != previous_FFW_count:
             count_file_path = os.path.join('count', 'FFW.txt')
             write_to_file(count_file_path, str(FFW))
             warnings_file_path = os.path.join('warnings', 'FFW.txt')
             write_to_file(warnings_file_path, f'Flash Flood Warnings: {FFW}')
-        
+
         if FFWC != previous_FFWC_count:
             count_file_path = os.path.join('count', 'FFWC.txt')
             write_to_file(count_file_path, str(FFWC))
             warnings_file_path = os.path.join('warnings', 'FFWC.txt')
             write_to_file(warnings_file_path, f'Considerable Flash Flood Warnings: {FFWC}')
-        
+
         if FFE != previous_FFE_count:
             count_file_path = os.path.join('count', 'FFE.txt')
             write_to_file(count_file_path, str(FFE))
             warnings_file_path = os.path.join('warnings', 'FFE.txt')
             write_to_file(warnings_file_path, f'Flash Flood Emergencies: {FFE}')
-        
 
         if TOA != previous_TOA_count:
             count_file_path = os.path.join('count', 'TOA.txt')
             write_to_file(count_file_path, str(TOA))
             warnings_file_path = os.path.join('warnings', 'TOA.txt')
             write_to_file(warnings_file_path, f'Tornado Watches: {TOA}')
-        
+
         if SVA != previous_SVA_count:
             count_file_path = os.path.join('count', 'SVA.txt')
             write_to_file(count_file_path, str(SVA))
             warnings_file_path = os.path.join('warnings', 'SVA.txt')
             write_to_file(warnings_file_path, f'Severe Thunderstorm Watches: {SVA}')
-        
 
         if SPS != previous_SPS_count:
             count_file_path = os.path.join('count', 'SPS.txt')
@@ -455,7 +450,7 @@ def fetch_alerts():
 
         for alert in features:
             properties = alert["properties"]
-            
+
             event = properties["event"]
             identifier = properties["id"]
             sent = properties["sent"]
@@ -467,7 +462,7 @@ def fetch_alerts():
 
             if not database.alert_exists(identifier=identifier, table_name='alerts'):
                 # New Alert
-                event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)
+                event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)  # skipcq: PYL-E1121
                 display_alert(event, notification_message, area_desc)
                 database.insert(identifier=identifier, table_name='active_alerts', event=event,
                                 notification_message=notification_message, area_desc=area_desc,
@@ -481,11 +476,11 @@ def fetch_alerts():
 
                 if sent_datetime != existing_sent_datetime:
                     # Update to Existing Alert
-                    event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)
+                    event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)  # skipcq: PYL-E1121
                     display_alert(event, notification_message, area_desc)
                     database.update(identifier=identifier, table_name='alerts',
                                     send_datetime=sent_datetime, expires_datetime=expires_datetime, peoperties=properties)
-    
+
     update_active_alerts()
 
 

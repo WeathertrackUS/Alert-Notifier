@@ -1,6 +1,8 @@
 # Dashboard.py
 
-import database, os, re
+import database
+import os
+import re
 from datetime import datetime, timezone, timedelta
 from flask import Flask, render_template
 from collections import OrderedDict
@@ -43,15 +45,15 @@ def read_from_file(filename):
 def index():
     """
     The index function handles HTTP GET requests to the root URL ('/').
-    
+
     It fetches and updates alerts, reads various alert totals from files, 
     and renders the index.html template with the active alerts and alert totals.
-    
+
     Returns:
         The rendered index.html template with the active alerts and alert totals.
     """
     fetch_and_update_alerts()
-    
+
     active_alerts = app.config.get('ACTIVE_ALERTS', [])
 
     TOR_total = read_from_file(os.path.join(count_dir, 'TOR Total.txt'))
@@ -105,7 +107,7 @@ def get_timezone_keyword(offset):
         timedelta(hours=-7): 'PDT',
         timedelta(hours=-9): 'AKDT',
         timedelta(hours=-10): 'HST',
-        
+
         timedelta(hours=-3): 'ADT',
         timedelta(hours=+10): 'CHST',
         timedelta(hours=+11): 'SAMT'
@@ -114,8 +116,7 @@ def get_timezone_keyword(offset):
     timezone_keyword = offset_to_keyword.get(offset)
     if timezone_keyword is None:
         return str(offset)
-    else:
-        return timezone_keyword
+    return timezone_keyword
 
 
 def fetch_and_update_alerts():
@@ -135,7 +136,7 @@ def fetch_and_update_alerts():
     alerts = database.get_all_alerts(table_name='alerts')
     current_time = datetime.now(timezone.utc)
     for alert in alerts:
-        identifier, sent_datetime_str, expires_datetime_str, properties_str = alert
+        identifier, sent_datetime_str, expires_datetime_str, properties_str = alert  # skipcq: PYL-W0612
 
         expires_datetime = datetime.strptime(expires_datetime_str, '%Y-%m-%d %H:%M:%S').replace(tzinfo=timezone.utc)
         properties = ast.literal_eval(properties_str)  # Convert the string back to a dictionary
@@ -213,7 +214,7 @@ def fetch_and_update_alerts():
                     description += f", Max Wind: {(maxwind)}"
                 else:
                     description += f"Max Wind: {(maxwind)}"
-            
+
             if maxhail != 'None':
                 if description != '':
                     description += f", Max Hail: {(maxhail)}"
@@ -260,10 +261,10 @@ def clean_and_capitalize(value):
         string = ''.join(str(item) for item in value)
     else:
         string = str(value)
-    
+
     if not string:
         return ""
-    
+
     cleaned_string = re.sub(r'[\[\]\'\"]', '', string)
     return cleaned_string.capitalize()
 
@@ -279,10 +280,10 @@ def clean_string(value):
         string = ''.join(str(item) for item in value)
     else:
         string = str(value)
-    
+
     if not string:
         return ""
-    
+
     cleaned_string = re.sub(r'[\[\]\'\"]', '', string)    
     return cleaned_string
 
@@ -290,10 +291,10 @@ def clean_string(value):
 def update_active_alerts():
     """
     Updates the list of active alerts by fetching and updating the alerts within the application context.
-    
+
     Parameters:
     None
-    
+
     Returns:
     None
     """
