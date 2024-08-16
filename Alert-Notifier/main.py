@@ -12,7 +12,7 @@ from datetime import datetime
 from plyer import notification
 from PIL import Image
 from dateutil import parser, tz
-from dashboard import app, update_active_alerts
+from dashboard import update_active_alerts
 
 database.create_table(table_name='alerts', values='identifier, event, area_desc, expires_datetime')
 
