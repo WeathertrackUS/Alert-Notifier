@@ -119,7 +119,7 @@ def hide_to_system_tray():
     icon.run()
 
 
-def warning_count(data):
+def warning_count(data):  # skipcq: PYL-R1000
     """
     Counts the number of different types of weather alerts in the given data.
 
@@ -462,11 +462,11 @@ def fetch_alerts():
 
             if not database.alert_exists(identifier=identifier, table_name='alerts'):
                 # New Alert
-                event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)  # skipcq: PYL-E1121
+                event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)  # skipcq: PYL-E1121  # skipcq: PYL-W0501
                 display_alert(event, notification_message, area_desc)
                 database.insert(identifier=identifier, table_name='active_alerts', event=event,
                                 notification_message=notification_message, area_desc=area_desc,
-                                expires_datetime=expires_datetime)  # skipcq: PYL-W0501
+                                expires_datetime=expires_datetime)
             else:
                 # Alert Exists
                 existing_alert = database.get_alert(identifier=identifier, table_name='alerts')
@@ -476,7 +476,7 @@ def fetch_alerts():
 
                 if sent_datetime != existing_sent_datetime:
                     # Update to Existing Alert
-                    event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)  # skipcq: PYL-E1121
+                    event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)  # skipcq: PYL-E1121  # skipcq: PYL-W0501
                     display_alert(event, notification_message, area_desc)
                     database.update(identifier=identifier, table_name='alerts',
                                     send_datetime=sent_datetime, expires_datetime=expires_datetime, peoperties=properties)
@@ -511,11 +511,11 @@ def display_alert(event, notification_message, area_desc):
     """
     # Windows Notification
     notification.notify(
-        title = event,
-        message = notification_message,
-        app_name = "Weather Alert",
-        timeout = 10,
-        toast = True
+        title=event,
+        message=notification_message,
+        app_name="Weather Alert",
+        timeout=10,
+        toast=True
     )
 
     # Get Current Time
@@ -525,6 +525,7 @@ def display_alert(event, notification_message, area_desc):
     # Print Alert in Terminal
     print('')
     print(f'{current_time} - {notification_message}, {area_desc}')
+
 
 system_tray_thread = threading.Thread(target=hide_to_system_tray)
 system_tray_thread.start()

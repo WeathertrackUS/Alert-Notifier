@@ -46,7 +46,7 @@ def index():
     """
     The index function handles HTTP GET requests to the root URL ('/').
 
-    It fetches and updates alerts, reads various alert totals from files, 
+    It fetches and updates alerts, reads various alert totals from files,
     and renders the index.html template with the active alerts and alert totals.
 
     Returns:
@@ -64,7 +64,10 @@ def index():
     SPS = read_from_file(os.path.join(count_dir, 'SPS.txt'))
     Non_SPS_Total = read_from_file(os.path.join(count_dir, 'Non SPS Total.txt'))
 
-    return render_template('index.html', active_alerts=active_alerts, TOR_total=TOR_total, SVR_total=SVR_total, FFW_total=FFW_total, TOA=TOA, SVA=SVA, SPS=SPS, Non_SPS_Total=Non_SPS_Total)
+    return render_template('index.html', active_alerts=active_alerts, TOR_total=TOR_total, 
+                           SVR_total=SVR_total, FFW_total=FFW_total, TOA=TOA, SVA=SVA, SPS=SPS, 
+                           Non_SPS_Total=Non_SPS_Total)
+
 
 ALERT_PRIORITY = OrderedDict([
     ('Tornado Warning', 1),
@@ -119,7 +122,7 @@ def get_timezone_keyword(offset):
     return timezone_keyword
 
 
-def fetch_and_update_alerts():
+def fetch_and_update_alerts():  # skipcq: PYL-R1000
     """
     Fetches and updates alerts from the database.
 
@@ -170,12 +173,11 @@ def fetch_and_update_alerts():
             nwsheadline = clean_string(parameters.get("NWSheadline"))
             FFdetection = clean_and_capitalize(parameters.get("flashFloodDetection"))
 
-
             description = ''
 
             if messagetype == 'Update':
                 if description != '':
-                    description += f", UPDATE"
+                    description += ", UPDATE"
                 else:
                     description += "UPDATE"
 
@@ -271,9 +273,9 @@ def clean_and_capitalize(value):
 
 def clean_string(value):
     """
-    This function cleans a given string by removing any list or dictionary 
-    characters and returning it as a string. It takes one parameter, 'value', 
-    which can be a string or a list of strings. It returns an empty string if 
+    This function cleans a given string by removing any list or dictionary
+    characters and returning it as a string. It takes one parameter, 'value',
+    which can be a string or a list of strings. It returns an empty string if
     the input is empty, otherwise it returns the cleaned string.
     """
     if isinstance(value, list):
@@ -284,7 +286,7 @@ def clean_string(value):
     if not string:
         return ""
 
-    cleaned_string = re.sub(r'[\[\]\'\"]', '', string)    
+    cleaned_string = re.sub(r'[\[\]\'\"]', '', string)
     return cleaned_string
 
 
@@ -301,5 +303,6 @@ def update_active_alerts():
     with app.app_context():
         fetch_and_update_alerts()
 
+
 if __name__ == '__main__':
-    app.run(host = 'localhost', port = 5000)
+    app.run(host='localhost', port=5000)
