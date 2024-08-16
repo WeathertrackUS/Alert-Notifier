@@ -14,7 +14,7 @@ from PIL import Image
 from dateutil import parser, tz
 from dashboard import update_active_alerts
 
-database.create_table(table_name='alerts', values='identifier, event, area_desc, expires_datetime')
+database.create_table(table_name='alerts', values='identifier, event, area_desc, expires_datetime, properties, notification_message')
 
 if os.path.exists('warnings'):
     for f in os.listdir('warnings'):
@@ -84,8 +84,10 @@ warning_count_files = {
     'SPS.txt': '0'
 }
 
+
 def close_program():
     os._exit(0)
+
 
 def hide_to_system_tray():
     global icon
@@ -93,6 +95,7 @@ def hide_to_system_tray():
     menu = (pystray.MenuItem("Exit", close_program),)
     icon = pystray.Icon("name", image, "My System Tray Icon", menu)
     icon.run()
+
 
 def warning_count(data):
     # Initialize Counting Variables
@@ -326,7 +329,8 @@ def warning_count(data):
             write_to_file(count_file_path, str(SPS))
             warnings_file_path = os.path.join('warnings', 'SPS.txt')
             write_to_file(warnings_file_path, f'Seasonal Period Watches: {SPS}')
-        
+
+
 def write_to_file(FILENAME, content1):  # skipcq: PYL-R1710
     """
     Writes content to a file.
@@ -369,6 +373,7 @@ def read_from_file(filename1):
     except (FileNotFoundError, ValueError):
         return 0
 
+
 def fetch_alerts():
     endpoint = "https://api.weather.gov/alerts/active"
     params = {
@@ -406,7 +411,7 @@ def fetch_alerts():
                 # New Alert
                 event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)
                 display_alert(event, notification_message, area_desc)
-                database.insert(identifier=identifier, table_name='active_alerts', event=event, notification_message=notification_message, area_desc=area_desc, expires_datetime=expires_datetime)
+                database.insert(identifier=identifier, table_name='active_alerts', event=event, notification_message=notification_message, area_desc=area_desc, expires_datetime=expires_datetime)  # skipcq: PYL-W0501
             else:
                 # Alert Exists
                 existing_alert = database.get_alert(identifier=identifier, table_name='alerts')
@@ -418,12 +423,14 @@ def fetch_alerts():
                     # Update to Existing Alert
                     event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)
                     display_alert(event, notification_message, area_desc)
-                    database.update(identifier=identifier, send_datetime=sent_datetime, expires_datetime=expires_datetime, peoperties=properties)
+                    database.update(identifier=identifier, table_name='alerts',send_datetime=sent_datetime, expires_datetime=expires_datetime, peoperties=properties)
     
     update_active_alerts()
 
+
 def update_active_alerts_and_exit():
     update_active_alerts()
+
 
 def display_alert(event, notification_message, area_desc):
     # Windows Notification

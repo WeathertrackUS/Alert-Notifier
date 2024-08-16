@@ -3,6 +3,7 @@ from datetime import datetime
 
 MAX_MESSAGE_LENGTH = 256
 
+
 def process_alert(properties, area_desc):
     headline = properties["headline"]
     description = ''

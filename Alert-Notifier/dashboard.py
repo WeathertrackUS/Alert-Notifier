@@ -12,6 +12,7 @@ count_dir = '../ignore/count'
 app = Flask(__name__, template_folder=os.path.join(base_dir, 'templates'), static_folder=os.path.join(base_dir, 'static'))
 app.config['ACTIVE_ALERTS'] = []
 
+
 def read_from_file(filename):
     """
     Read an integer from a file.
@@ -36,7 +37,8 @@ def read_from_file(filename):
             return 0
     except FileNotFoundError:
         return 0
-    
+
+
 @app.route('/')
 def index():
     """
@@ -71,6 +73,7 @@ ALERT_PRIORITY = OrderedDict([
     ('Special Weather Statement', 6)
 ])
 
+
 def sort_alerts(alerts):
     """
     Sorts a list of alerts based on their priority.
@@ -83,6 +86,7 @@ def sort_alerts(alerts):
     """
     sorted_alerts = sorted(alerts, key=lambda x: ALERT_PRIORITY.get(x['event'], float('inf')))
     return sorted_alerts
+
 
 def get_timezone_keyword(offset):
     """
@@ -112,6 +116,7 @@ def get_timezone_keyword(offset):
         return str(offset)
     else:
         return timezone_keyword
+
 
 def fetch_and_update_alerts():
     """
@@ -240,6 +245,7 @@ def fetch_and_update_alerts():
     with app.app_context():
         app.config['ACTIVE_ALERTS'] = sorted_alerts
 
+
 def clean_and_capitalize(value):
     """
     Cleans and capitalizes a given value by removing unwanted characters and converting it to title case.
@@ -261,6 +267,7 @@ def clean_and_capitalize(value):
     cleaned_string = re.sub(r'[\[\]\'\"]', '', string)
     return cleaned_string.capitalize()
 
+
 def clean_string(value):
     """
     This function cleans a given string by removing any list or dictionary 
@@ -278,6 +285,7 @@ def clean_string(value):
     
     cleaned_string = re.sub(r'[\[\]\'\"]', '', string)    
     return cleaned_string
+
 
 def update_active_alerts():
     """
