@@ -127,7 +127,7 @@ def fetch_and_update_alerts():
         None
     """
     active_alerts = []
-    alerts = database.get_all_alerts()
+    alerts = database.get_all_alerts(table_name='alerts')
     current_time = datetime.now(timezone.utc)
     for alert in alerts:
         identifier, sent_datetime_str, expires_datetime_str, properties_str = alert
@@ -233,7 +233,7 @@ def fetch_and_update_alerts():
                 "area": area_desc
             })
         else:
-            database.remove_alert(identifier)
+            database.remove_alert(identifier=identifier, table_name='alerts')
 
     sorted_alerts = sort_alerts(active_alerts)
 

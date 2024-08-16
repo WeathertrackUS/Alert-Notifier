@@ -1,12 +1,20 @@
-import requests, json, time, os, pystray, threading, alerts, database, atexit, pytz, datetime
+import requests
+import time
+import os
+import pystray
+import threading
+import alerts
+import database
+import atexit
+import pytz
+import datetime
 from datetime import datetime, timezone
 from plyer import notification
 from PIL import Image
 from dateutil import parser, tz
-from apscheduler.schedulers.background import BackgroundScheduler
 from dashboard import app, update_active_alerts
 
-database.create_table()
+database.create_table(table_name='alerts', values='identifier, event, area_desc, expires_datetime')
 
 if os.path.exists('warnings'):
     for f in os.listdir('warnings'):
@@ -394,17 +402,15 @@ def fetch_alerts():
             sent_datetime = parser.parse(sent).astimezone(pytz.utc)
             expires_datetime = parser.parse(expires).astimezone(pytz.utc)
 
-            if not database.alert_exists(identifier):
+            if not database.alert_exists(identifier=identifier, table_name='alerts'):
                 # New Alert
                 event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)
                 display_alert(event, notification_message, area_desc)
-                database.insert_alert(identifier, sent_datetime, expires_datetime, properties)
+                database.insert(identifier=identifier, table_name='active_alerts', event=event, notification_message=notification_message, area_desc=area_desc, expires_datetime=expires_datetime)
             else:
                 # Alert Exists
-                existing_alert = database.get_alert(identifier)
+                existing_alert = database.get_alert(identifier=identifier, table_name='alerts')
                 existing_sent_datetime_str = existing_alert[1]
-                existing_expires_datetime_str = existing_alert[2]
-                existing_properties = existing_alert[3]
 
                 existing_sent_datetime = parser.parse(existing_sent_datetime_str).replace(tzinfo=tz.tzutc())
 
@@ -412,7 +418,7 @@ def fetch_alerts():
                     # Update to Existing Alert
                     event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)
                     display_alert(event, notification_message, area_desc)
-                    database.update_alert(identifier, sent_datetime, expires_datetime, properties)
+                    database.update(identifier=identifier, send_datetime=sent_datetime, expires_datetime=expires_datetime, peoperties=properties)
     
     update_active_alerts()
 

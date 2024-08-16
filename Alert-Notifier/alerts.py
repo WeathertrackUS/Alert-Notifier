@@ -1,6 +1,5 @@
 # alerts.py
-import database
-from datetime import datetime, timedelta
+from datetime import datetime
 
 MAX_MESSAGE_LENGTH = 256
 
