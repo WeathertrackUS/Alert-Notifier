@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Alert Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        // Refresh the page every 5 seconds (adjust the interval as needed)
+        setInterval(function() {
+            window.location.reload();
+        }, 60000);
+    </script>
+</head>
+<body>
+    <h1>Weather Alert Dashboard</h1>
+    <h2>Alert Summary</h2>
+    <div class="ticker-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tornado Warnings</th>
+                    <th>Severe Thunderstorm Warnings</th>
+                    <th>Tornado Watches</th>
+                    <th>Severe Thunderstorm Watches</th>
+                    <th>Flash Flood Warnings</th>
+                    {% if Non_SPS_Total == 0 %}
+                    <th>Special Weather Statements</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="{% if TOR_total > 0 %}tornado-warning{% endif %}">{{ TOR_total }}</td>
+                    <td class="{% if SVR_total > 0 %}severe-thunderstorm-warning{% endif %}">{{ SVR_total }}</td>
+                    <td class="{% if TOA > 0 %}tornado-watch{% endif %}">{{ TOA }}</td>
+                    <td class="{% if SVA > 0 %}severe-thunderstorm-watch{% endif %}">{{ SVA }}</td>
+                    <td class="{% if FFW_total > 0 %}flash-flood-warning{% endif %}">{{ FFW_total }}</td>
+                    {% if Non_SPS_Total == 0 %}
+                    <td class="{% if SPS > 0 %}special-weather-statement{% endif %}">{{ SPS }}</td>
+                    {% endif %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <h2>Active Alerts</h2>
+    <div class="alert-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Forecast Office</th>
+                    <th>Description</th>
+                    <th>Expiration Time</th>
+                    <th>Area</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alert in active_alerts %}
+                {% if Non_SPS_Total == 0 or alert.event != 'Special Weather Statement' %}
+                <tr class="{% if alert.event == 'Tornado Warning' %}tornado-warning
+                           {% elif alert.event == 'Severe Thunderstorm Warning' %}severe-thunderstorm-warning
+                           {% elif alert.event == 'Flash Flood Warning' %}flash-flood-warning
+                           {% elif alert.event == 'Tornado Watch' %}tornado-watch
+                           {% elif alert.event == 'Severe Thunderstorm Watch' %}severe-thunderstorm-watch
+                           {% elif alert.event == 'Special Weather Statement' %}special-weather-statement
+                           {% endif %}">
+                    <td>{{ alert.event }}</td>
+                    <td>{{ alert.wfo }}</td>
+                    <td>{{ alert.description }}</td>
+                    <td>{{ alert.expiration }}</td>
+                    <td>{{ alert.area }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
