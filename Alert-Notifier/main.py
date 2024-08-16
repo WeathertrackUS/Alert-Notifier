@@ -8,7 +8,7 @@ import database
 import atexit
 import pytz
 import datetime
-from datetime import datetime, timezone
+from datetime import datetime
 from plyer import notification
 from PIL import Image
 from dateutil import parser, tz
