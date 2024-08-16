@@ -2,13 +2,15 @@
 
 ## Project Overview
 
-Alert-Notifier is a tool designed to [brief description of the project's purpose].
+Alert-Notifier is a tool designed to give notifications based on select new and updated weather alerts from the NWS. The tool also has a web-based dashboard that can be turned on and will display all active alerts processed through the tool.
 
 ## Project Structure
 
 The project is stored in the Alert-Notifier folder and contains the following:
 
-[List the actual files and folders in the Alert-Notifier directory]
+/Alert-Notifier - All Python Programs
+/files - All needed support files
+/files/web - All files needed for the web-based dashboard
 
 ## Setup
 
