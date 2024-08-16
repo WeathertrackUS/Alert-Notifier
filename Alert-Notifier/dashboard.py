@@ -64,8 +64,8 @@ def index():
     SPS = read_from_file(os.path.join(count_dir, 'SPS.txt'))
     Non_SPS_Total = read_from_file(os.path.join(count_dir, 'Non SPS Total.txt'))
 
-    return render_template('index.html', active_alerts=active_alerts, TOR_total=TOR_total, 
-                           SVR_total=SVR_total, FFW_total=FFW_total, TOA=TOA, SVA=SVA, SPS=SPS, 
+    return render_template('index.html', active_alerts=active_alerts, TOR_total=TOR_total,
+                           SVR_total=SVR_total, FFW_total=FFW_total, TOA=TOA, SVA=SVA, SPS=SPS,
                            Non_SPS_Total=Non_SPS_Total)
 
 
