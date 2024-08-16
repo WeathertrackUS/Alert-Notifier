@@ -86,10 +86,32 @@ warning_count_files = {
 
 
 def close_program():
+    """
+    Closes the program immediately.
+
+    This function terminates the program's execution by calling os._exit(0), which exits the process with a status code of 0.
+
+    Parameters:
+        - None
+
+    Returns:
+        - None
+    """
     os._exit(0)
 
 
 def hide_to_system_tray():
+    """
+    Hides the application to the system tray.
+
+    This function creates a system tray icon with an exit menu item. When the exit menu item is clicked, the application is closed.
+
+    Parameters:
+    - None
+
+    Returns:
+    - None
+    """
     global icon
     image = Image.open('My_project.png')
     menu = (pystray.MenuItem("Exit", close_program),)
@@ -98,6 +120,25 @@ def hide_to_system_tray():
 
 
 def warning_count(data):
+    """
+    Counts the number of different types of weather alerts in the given data.
+
+    Parameters:
+    - data (dict): A dictionary containing weather alert data.
+
+    Returns:
+    - None
+
+    This function iterates over the 'features' key in the data dictionary and counts the number of different types of weather alerts.
+    It initializes counting variables for each type of alert and updates them based on the properties of each alert.
+    It also reads and updates count files for each type of alert.
+    The count files are stored in the 'count' directory and contain the current count of each type of alert.
+    The function also writes the total count of each type of alert to a corresponding file in the 'warnings' directory.
+
+    Note: The function assumes that the data dictionary has a 'features' key containing a list of alert dictionaries.
+    Each alert dictionary should have a 'properties' key containing an event key with the type of alert.
+    The properties dictionary may also contain 'parameters' key with additional information about the alert.
+    """
     # Initialize Counting Variables
     Alert_Total = 0
     Non_SPS_Total = 0
@@ -378,9 +419,9 @@ def fetch_alerts():
     """
     Fetches weather alerts from the National Weather Service API and processes them.
 
-    Retrieves a list of active weather alerts from the NWS API, filters them based on 
-    severity, urgency, and certainty, and then processes each alert to extract relevant 
-    information such as the event type, identifier, sent time, area description, and 
+    Retrieves a list of active weather alerts from the NWS API, filters them based on
+    severity, urgency, and certainty, and then processes each alert to extract relevant
+    information such as the event type, identifier, sent time, area description, and
     expiration time.
 
     If an alert is new, it is inserted into the database and a notification is displayed.
@@ -428,7 +469,9 @@ def fetch_alerts():
                 # New Alert
                 event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)
                 display_alert(event, notification_message, area_desc)
-                database.insert(identifier=identifier, table_name='active_alerts', event=event, notification_message=notification_message, area_desc=area_desc, expires_datetime=expires_datetime)  # skipcq: PYL-W0501
+                database.insert(identifier=identifier, table_name='active_alerts', event=event, 
+                                notification_message=notification_message, area_desc=area_desc, 
+                                expires_datetime=expires_datetime)  # skipcq: PYL-W0501
             else:
                 # Alert Exists
                 existing_alert = database.get_alert(identifier=identifier, table_name='alerts')
@@ -440,7 +483,8 @@ def fetch_alerts():
                     # Update to Existing Alert
                     event, notification_message, area_desc, expires_datetime = alerts.process_alert(identifier, properties, sent_datetime, area_desc)
                     display_alert(event, notification_message, area_desc)
-                    database.update(identifier=identifier, table_name='alerts',send_datetime=sent_datetime, expires_datetime=expires_datetime, peoperties=properties)
+                    database.update(identifier=identifier, table_name='alerts', 
+                                    send_datetime=sent_datetime, expires_datetime=expires_datetime, peoperties=properties)
     
     update_active_alerts()
 
@@ -448,10 +492,10 @@ def fetch_alerts():
 def update_active_alerts_and_exit():
     """
     Updates active alerts and exits the application.
-    
+
     Parameters:
     None
-    
+
     Returns:
     None
     """
